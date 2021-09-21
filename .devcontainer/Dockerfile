@@ -1,51 +1,21 @@
-#-------------------------------------------------------------------------------------------------------------
-# Copyright (c) Microsoft Corporation. All rights reserved.
-# Licensed under the MIT License. See https://go.microsoft.com/fwlink/?linkid=2090316 for license information.
-#-------------------------------------------------------------------------------------------------------------
-FROM ubuntu:focal
+# See here for image contents: https://github.com/microsoft/vscode-dev-containers/tree/v0.192.0/containers/ubuntu/.devcontainer/base.Dockerfile
 
-# Avoid warnings by switching to noninteractive
-ENV DEBIAN_FRONTEND=noninteractive
+# [Choice] Ubuntu version: bionic, focal
+ARG VARIANT="focal"
+FROM mcr.microsoft.com/vscode/devcontainers/base:0-${VARIANT}
 
-# This Dockerfile adds a non-root user with sudo access. Use the "remoteUser"
-# property in devcontainer.json to use it. On Linux, the container user's GID/UIDs
-# will be updated to match your local UID/GID (when using the dockerFile property).
-# See https://aka.ms/vscode-remote/containers/non-root-user for details.
-ARG USERNAME=vscode
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
+# ** [Optional] Uncomment this section to install additional packages. **
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+    && apt-get -y install --no-install-recommends \
+    wget iproute2 procps lsb-release
+
+
 ARG UCM_DIR=/opt/unison-language
-ARG UCM_ARCHIVE_NAME=unison-Linux.tar.gz
-ARG UCM_ARCHIVE_URL=https://github.com/unisonweb/unison/releases/download/M2-Linux/$UCM_ARCHIVE_NAME
+ARG UCM_ARCHIVE_NAME=ucm-linux.tar.gz
+ARG UCM_ARCHIVE_URL=https://github.com/unisonweb/unison/releases/download/release%2FM2h/$UCM_ARCHIVE_NAME
 
-# Unicode support
-ENV LANG C.UTF-8
-
-# Configure apt and install packages
-RUN apt-get update \
-    && apt-get -y install --no-install-recommends apt-utils dialog 2>&1 \
-    #
-    # Verify git, process tools, lsb-release (common in install instructions for CLIs) installed
-    && apt-get -y install git iproute2 procps lsb-release wget \
-    # install unison
-    && mkdir -p $UCM_DIR \
+RUN mkdir -p $UCM_DIR \
     && wget -P $UCM_DIR $UCM_ARCHIVE_URL \
     && tar -C $UCM_DIR -xzf $UCM_DIR/$UCM_ARCHIVE_NAME \
     && ln -s $UCM_DIR/ucm /usr/bin/ \
-    && rm $UCM_DIR/$UCM_ARCHIVE_NAME \
-    #
-    # Create a non-root user to use if preferred - see https://aka.ms/vscode-remote/containers/non-root-user.
-    && groupadd --gid $USER_GID $USERNAME \
-    && useradd -s /bin/bash --uid $USER_UID --gid $USER_GID -m $USERNAME \
-    # [Optional] Add sudo support for the non-root user
-    && apt-get install -y sudo \
-    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME\
-    && chmod 0440 /etc/sudoers.d/$USERNAME \
-    #
-    # Clean up
-    && apt-get autoremove -y \
-    && apt-get clean -y \
-    && rm -rf /var/lib/apt/lists/*
-
-# Switch back to dialog for any ad-hoc use of apt-get
-ENV DEBIAN_FRONTEND=dialog
+    && rm $UCM_DIR/$UCM_ARCHIVE_NAME
