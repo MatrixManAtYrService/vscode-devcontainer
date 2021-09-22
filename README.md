@@ -10,7 +10,7 @@ You can check that first link for the full details of how to get set up to use V
     OR
     - F1 and "Remote-Containers: Open Folder in Container..." the cloned repo.
 5. If no terminal appears in VS Code, open a New Terminal from the Terminal menu. 
-6. Inside that terminal, run `ucm init` to create a codebase.
+6. Inside that terminal, run `ucm --codebase-create ./devCodebase` to create a codebase.
 7. Run `ucm` to start developing!
 
 

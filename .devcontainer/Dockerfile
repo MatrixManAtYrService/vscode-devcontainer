@@ -12,7 +12,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 
 ARG UCM_DIR=/opt/unison-language
 ARG UCM_ARCHIVE_NAME=ucm-linux.tar.gz
-ARG UCM_ARCHIVE_URL=https://github.com/unisonweb/unison/releases/download/release%2FM2h/$UCM_ARCHIVE_NAME
+ARG UCM_ARCHIVE_URL=https://github.com/unisonweb/unison/releases/download/latest/$UCM_ARCHIVE_NAME
 
 RUN mkdir -p $UCM_DIR \
     && wget -P $UCM_DIR $UCM_ARCHIVE_URL \
