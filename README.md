@@ -11,14 +11,14 @@ You can check that first link for the full details of how to get set up to use V
     - F1 and "Remote-Containers: Open Folder in Container..." the cloned repo.
 5. If no terminal appears in VS Code, open a New Terminal from the Terminal menu. 
 6. Inside that terminal, run `ucm --codebase-create ./devCodebase` to create a codebase.
-7. Run `ucm` to start developing!
+7. Run `ui` to start developing!
 
 
 Your codebase should be persisted even after rebuilding the container, but don't forget to also `push` it somewhere safe as a backup!
 
 Improvements, suggestions, and simplifications are welcome!
 
-Note: when running `ucm`, you'll get a message like: 
+Note: when running `ui`, you'll get a message like: 
 ```
   The Unison Codebase UI is running at
   http://127.0.0.1:39189/LMvqYeofPKwM7uOh5b7A%2FbtEM8tuN%2F%2Fu/ui
